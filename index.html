@@ -305,6 +305,53 @@
     .counter-glow {
       text-shadow: 0 0 20px rgba(255,0,51,0.8), 0 0 60px rgba(255,0,51,0.3);
     }
+
+    /* ===== MOBILE FIX ===== */
+    * { word-break: break-word; }
+    .font-cyber { word-break: break-all; }
+    @media (max-width: 480px) {
+      .font-cyber { font-size: inherit; letter-spacing: 0.05em !important; }
+      h1.font-cyber { font-size: 2.5rem !important; letter-spacing: 0.05em !important; }
+      h2.font-cyber { font-size: 1.5rem !important; }
+      h3.font-cyber { font-size: 0.8rem !important; }
+      .tracking-wider { letter-spacing: 0.03em !important; }
+      .tracking-widest { letter-spacing: 0.08em !important; }
+      .tracking-\[0\.3em\] { letter-spacing: 0.1em !important; }
+      .tracking-\[0\.15em\] { letter-spacing: 0.05em !important; }
+      .tracking-\[0\.2em\] { letter-spacing: 0.05em !important; }
+      .btn-glitch, .btn-red { padding: 12px 20px !important; font-size: 0.9rem !important; }
+      .terminal-box { padding: 16px !important; padding-top: 32px !important; }
+      .glow-green, .glow-cyan, .glow-red { text-shadow: none; }
+    }
+
+    /* ===== BLOG MODAL ===== */
+    .blog-modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(5,5,5,0.95);
+      z-index: 9990;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .blog-modal.active {
+      display: flex;
+    }
+    .blog-modal-content {
+      background: #0a0a0a;
+      border: 1px solid rgba(0,255,65,0.3);
+      max-width: 720px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      position: relative;
+    }
+    .blog-modal-content::-webkit-scrollbar { width: 4px; }
+    .blog-modal-content::-webkit-scrollbar-thumb { background: #00FF41; }
   </style>
 </head>
 <body class="scanlines crt-noise">
@@ -363,21 +410,21 @@
       <div class="mb-4">
         <span class="text-hax-green/40 font-terminal text-sm sm:text-base tracking-[0.3em]">[ SYSTEM BREACH DETECTED ]</span>
       </div>
-      <h1 class="font-cyber text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-wider mb-4">
+      <h1 class="font-cyber text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black tracking-wider mb-4 max-w-full">
         <span id="hero-title" class="glitch glow-green text-hax-green" data-text="INDOHAXSEC"></span>
         <span class="typing-cursor"></span>
       </h1>
-      <p class="font-mono text-hax-cyan text-base sm:text-lg md:text-xl tracking-[0.15em] mb-3 glow-cyan flicker">
+      <p class="font-mono text-hax-cyan text-sm sm:text-lg md:text-xl tracking-[0.05em] sm:tracking-[0.15em] mb-3 glow-cyan flicker">
         Indonesian Cyber Security Collective
       </p>
-      <p class="font-terminal text-gray-500 text-lg sm:text-xl md:text-2xl tracking-wider mb-10">
+      <p class="font-terminal text-gray-500 text-base sm:text-xl md:text-2xl tracking-normal sm:tracking-wider mb-10">
         Hack the System &bull; Secure the Truth &bull; Resist Oppression
       </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="#tentang" class="btn-glitch px-8 py-4 border-2 border-hax-green text-hax-green font-terminal text-xl tracking-widest hover:bg-hax-green/10 transition-all">
+      <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full">
+        <a href="#tentang" class="btn-glitch w-full sm:w-auto text-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-hax-green text-hax-green font-terminal text-lg sm:text-xl tracking-widest hover:bg-hax-green/10 transition-all">
           &gt; ENTER THE GRID
         </a>
-        <a href="#donate" class="btn-red px-8 py-4 border-2 border-hax-red bg-hax-red/10 text-hax-red font-terminal text-xl tracking-widest hover:bg-hax-red/20 transition-all">
+        <a href="#donate" class="btn-red w-full sm:w-auto text-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-hax-red bg-hax-red/10 text-hax-red font-terminal text-lg sm:text-xl tracking-widest hover:bg-hax-red/20 transition-all">
           &#9733; SUPPORT PALESTINE
         </a>
       </div>
@@ -392,7 +439,7 @@
     <div class="max-w-5xl mx-auto reveal">
       <div class="text-center mb-12">
         <span class="text-hax-green/50 font-terminal text-sm tracking-[0.3em]">// ABOUT US</span>
-        <h2 class="font-cyber text-3xl sm:text-4xl md:text-5xl text-hax-green glow-green mt-2 tracking-wider">
+        <h2 class="font-cyber text-2xl sm:text-4xl md:text-5xl text-hax-green glow-green mt-2 tracking-wider">
           <span class="glitch" data-text="TENTANG_KAMI">TENTANG_KAMI</span>
         </h2>
       </div>
@@ -438,7 +485,7 @@
     <div class="max-w-6xl mx-auto reveal">
       <div class="text-center mb-14">
         <span class="text-hax-green/50 font-terminal text-sm tracking-[0.3em]">// OUR ARSENAL</span>
-        <h2 class="font-cyber text-3xl sm:text-4xl md:text-5xl text-hax-green glow-green mt-2 tracking-wider">
+        <h2 class="font-cyber text-xl sm:text-4xl md:text-5xl text-hax-green glow-green mt-2 tracking-wider">
           <span class="glitch" data-text="TOOLS_&_RESOURCES">TOOLS_&_RESOURCES</span>
         </h2>
         <p class="font-terminal text-gray-500 mt-3 text-sm sm:text-base">Senjata digital kami untuk offensive & defensive security</p>
@@ -447,42 +494,42 @@
         <!-- Card 1 -->
         <div class="card-hack bg-black/50 p-6 sm:p-8 group">
           <div class="text-3xl sm:text-4xl mb-4 text-hax-green group-hover:text-hax-cyan transition-colors">&#9760;</div>
-          <h3 class="font-cyber text-lg text-hax-green mb-2 tracking-wider">WEB PENTESTING</h3>
+          <h3 class="font-cyber text-sm sm:text-lg text-hax-green mb-2 tracking-wider">WEB PENTESTING</h3>
           <p class="font-terminal text-gray-500 text-sm leading-relaxed">SQL Injection, XSS, CSRF, SSRF, dan eksploitasi web app modern. Bypass WAF & endpoint fuzzing.</p>
           <div class="mt-4 font-terminal text-hax-green/40 text-xs">[OFFENSIVE]</div>
         </div>
         <!-- Card 2 -->
         <div class="card-hack bg-black/50 p-6 sm:p-8 group">
           <div class="text-3xl sm:text-4xl mb-4 text-hax-cyan group-hover:text-hax-green transition-colors">&#9881;</div>
-          <h3 class="font-cyber text-lg text-hax-cyan mb-2 tracking-wider">NETWORK HACKING</h3>
+          <h3 class="font-cyber text-sm sm:text-lg text-hax-cyan mb-2 tracking-wider">NETWORK HACKING</h3>
           <p class="font-terminal text-gray-500 text-sm leading-relaxed">Network scanning, MITM attacks, packet sniffing, protocol exploitation, dan wireless pentesting.</p>
           <div class="mt-4 font-terminal text-hax-cyan/40 text-xs">[OFFENSIVE]</div>
         </div>
         <!-- Card 3 -->
         <div class="card-hack bg-black/50 p-6 sm:p-8 group">
           <div class="text-3xl sm:text-4xl mb-4 text-hax-magenta group-hover:text-hax-green transition-colors">&#128269;</div>
-          <h3 class="font-cyber text-lg text-hax-magenta mb-2 tracking-wider">OSINT</h3>
+          <h3 class="font-cyber text-sm sm:text-lg text-hax-magenta mb-2 tracking-wider">OSINT</h3>
           <p class="font-terminal text-gray-500 text-sm leading-relaxed">Open Source Intelligence gathering, social engineering recon, data correlation, dan digital footprinting.</p>
           <div class="mt-4 font-terminal text-hax-magenta/40 text-xs">[RECON]</div>
         </div>
         <!-- Card 4 -->
         <div class="card-hack bg-black/50 p-6 sm:p-8 group">
           <div class="text-3xl sm:text-4xl mb-4 text-hax-green group-hover:text-hax-cyan transition-colors">&#128273;</div>
-          <h3 class="font-cyber text-lg text-hax-green mb-2 tracking-wider">CRYPTOGRAPHY</h3>
+          <h3 class="font-cyber text-sm sm:text-lg text-hax-green mb-2 tracking-wider">CRYPTOGRAPHY</h3>
           <p class="font-terminal text-gray-500 text-sm leading-relaxed">Enkripsi, dekripsi, hash cracking, steganografi, dan implementasi secure communication channels.</p>
           <div class="mt-4 font-terminal text-hax-green/40 text-xs">[DEFENSIVE]</div>
         </div>
         <!-- Card 5 -->
         <div class="card-hack bg-black/50 p-6 sm:p-8 group">
           <div class="text-3xl sm:text-4xl mb-4 text-hax-cyan group-hover:text-hax-magenta transition-colors">&#128737;</div>
-          <h3 class="font-cyber text-lg text-hax-cyan mb-2 tracking-wider">PRIVACY TOOLS</h3>
+          <h3 class="font-cyber text-sm sm:text-lg text-hax-cyan mb-2 tracking-wider">PRIVACY TOOLS</h3>
           <p class="font-terminal text-gray-500 text-sm leading-relaxed">Anonymization, anti-tracking, secure OS setup, VPN/Tor configuration, dan metadata removal tools.</p>
           <div class="mt-4 font-terminal text-hax-cyan/40 text-xs">[DEFENSIVE]</div>
         </div>
         <!-- Card 6 -->
         <div class="card-hack bg-black/50 p-6 sm:p-8 group">
           <div class="text-3xl sm:text-4xl mb-4 text-hax-magenta group-hover:text-hax-green transition-colors">&#9889;</div>
-          <h3 class="font-cyber text-lg text-hax-magenta mb-2 tracking-wider">EXPLOIT DEV</h3>
+          <h3 class="font-cyber text-sm sm:text-lg text-hax-magenta mb-2 tracking-wider">EXPLOIT DEV</h3>
           <p class="font-terminal text-gray-500 text-sm leading-relaxed">Buffer overflow, ROP chains, shellcoding, reverse engineering, dan zero-day research framework.</p>
           <div class="mt-4 font-terminal text-hax-magenta/40 text-xs">[ADVANCED]</div>
         </div>
@@ -495,55 +542,55 @@
     <div class="max-w-6xl mx-auto reveal">
       <div class="text-center mb-14">
         <span class="text-hax-green/50 font-terminal text-sm tracking-[0.3em]">// LATEST OPERATIONS</span>
-        <h2 class="font-cyber text-3xl sm:text-4xl md:text-5xl text-hax-green glow-green mt-2 tracking-wider">
+        <h2 class="font-cyber text-2xl sm:text-4xl md:text-5xl text-hax-green glow-green mt-2 tracking-wider">
           <span class="glitch" data-text="BLOG_/_INTEL">BLOG_/_INTEL</span>
         </h2>
         <p class="font-terminal text-gray-500 mt-3 text-sm sm:text-base">Laporan operasi, tutorial, dan threat intelligence terbaru</p>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <!-- Blog 1 -->
-        <article class="card-hack bg-black/50 p-6 sm:p-8 group cursor-pointer">
+        <article onclick="openBlog(0)" class="card-hack bg-black/50 p-4 sm:p-8 group cursor-pointer">
           <div class="flex items-center gap-2 mb-3">
             <span class="px-2 py-0.5 bg-hax-red/20 text-hax-red font-terminal text-xs border border-hax-red/30">HOT</span>
             <span class="text-gray-600 font-terminal text-xs">2026-03-15</span>
           </div>
-          <h3 class="font-cyber text-base sm:text-lg text-hax-green group-hover:text-hax-cyan transition-colors tracking-wider mb-2">
+          <h3 class="font-cyber text-xs sm:text-lg text-hax-green group-hover:text-hax-cyan transition-colors tracking-wider mb-2">
             BYPASS CLOUDFLARE WAF 2026: TEKNIK TERBARU
           </h3>
           <p class="font-terminal text-gray-500 text-sm leading-relaxed">Analisis mendalam bypass WAF Cloudflare menggunakan teknik HTTP smuggling dan encoding tricks terbaru...</p>
           <div class="mt-4 font-terminal text-hax-green/60 text-sm group-hover:text-hax-green transition-colors">&gt; read_more --full</div>
         </article>
         <!-- Blog 2 -->
-        <article class="card-hack bg-black/50 p-6 sm:p-8 group cursor-pointer">
+        <article onclick="openBlog(1)" class="card-hack bg-black/50 p-4 sm:p-8 group cursor-pointer">
           <div class="flex items-center gap-2 mb-3">
             <span class="px-2 py-0.5 bg-hax-cyan/20 text-hax-cyan font-terminal text-xs border border-hax-cyan/30">OSINT</span>
             <span class="text-gray-600 font-terminal text-xs">2026-03-10</span>
           </div>
-          <h3 class="font-cyber text-base sm:text-lg text-hax-cyan group-hover:text-hax-green transition-colors tracking-wider mb-2">
+          <h3 class="font-cyber text-xs sm:text-lg text-hax-cyan group-hover:text-hax-green transition-colors tracking-wider mb-2">
             OSINT TEKNIK INDONESIA: PANDUAN LENGKAP
           </h3>
           <p class="font-terminal text-gray-500 text-sm leading-relaxed">Framework OSINT untuk investigasi digital di Indonesia — dari data publik, social media, hingga dark web recon...</p>
           <div class="mt-4 font-terminal text-hax-cyan/60 text-sm group-hover:text-hax-cyan transition-colors">&gt; read_more --full</div>
         </article>
         <!-- Blog 3 -->
-        <article class="card-hack bg-black/50 p-6 sm:p-8 group cursor-pointer">
+        <article onclick="openBlog(2)" class="card-hack bg-black/50 p-4 sm:p-8 group cursor-pointer">
           <div class="flex items-center gap-2 mb-3">
             <span class="px-2 py-0.5 bg-hax-magenta/20 text-hax-magenta font-terminal text-xs border border-hax-magenta/30">GUIDE</span>
             <span class="text-gray-600 font-terminal text-xs">2026-03-05</span>
           </div>
-          <h3 class="font-cyber text-base sm:text-lg text-hax-magenta group-hover:text-hax-green transition-colors tracking-wider mb-2">
+          <h3 class="font-cyber text-xs sm:text-lg text-hax-magenta group-hover:text-hax-green transition-colors tracking-wider mb-2">
             DIGITAL RESISTANCE GUIDE: ANONIMITAS TOTAL
           </h3>
           <p class="font-terminal text-gray-500 text-sm leading-relaxed">Setup lingkungan anonim sempurna — Tails OS, Tor bridges, cryptocurrency mixing, dan secure communication...</p>
           <div class="mt-4 font-terminal text-hax-magenta/60 text-sm group-hover:text-hax-magenta transition-colors">&gt; read_more --full</div>
         </article>
         <!-- Blog 4 -->
-        <article class="card-hack bg-black/50 p-6 sm:p-8 group cursor-pointer">
+        <article onclick="openBlog(3)" class="card-hack bg-black/50 p-4 sm:p-8 group cursor-pointer">
           <div class="flex items-center gap-2 mb-3">
             <span class="px-2 py-0.5 bg-hax-green/20 text-hax-green font-terminal text-xs border border-hax-green/30">TOOL</span>
             <span class="text-gray-600 font-terminal text-xs">2026-02-28</span>
           </div>
-          <h3 class="font-cyber text-base sm:text-lg text-hax-green group-hover:text-hax-cyan transition-colors tracking-wider mb-2">
+          <h3 class="font-cyber text-xs sm:text-lg text-hax-green group-hover:text-hax-cyan transition-colors tracking-wider mb-2">
             INDORECON v3.0: AUTOMATED RECON FRAMEWORK
           </h3>
           <p class="font-terminal text-gray-500 text-sm leading-relaxed">Release tool reconnaissance otomatis karya IndoHaxSec — subdomain enum, port scan, tech detection dalam satu command...</p>
@@ -553,6 +600,14 @@
     </div>
   </section>
 
+  <!-- ==================== BLOG MODAL ==================== -->
+  <div id="blog-modal" class="blog-modal" onclick="if(event.target===this)closeBlog()">
+    <div class="blog-modal-content">
+      <button onclick="closeBlog()" class="absolute top-4 right-4 text-hax-green hover:text-hax-red font-terminal text-2xl transition-colors z-10">&times; CLOSE</button>
+      <div id="blog-modal-body"></div>
+    </div>
+  </div>
+
   <!-- ==================== DONATE – SUPPORT PALESTINE ==================== -->
   <section id="donate" class="py-20 sm:py-28 px-4 relative palestine-bg">
     <!-- Top red line -->
@@ -560,7 +615,7 @@
     <div class="max-w-5xl mx-auto reveal">
       <div class="text-center mb-10 sm:mb-14">
         <span class="text-hax-red/70 font-terminal text-sm tracking-[0.3em] flicker">// HUMANITARIAN OPERATION</span>
-        <h2 class="font-cyber text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-hax-red glow-red mt-3 tracking-wider">
+        <h2 class="font-cyber text-2xl sm:text-5xl md:text-6xl lg:text-7xl text-hax-red glow-red mt-3 tracking-normal sm:tracking-wider">
           <span class="glitch" data-text="OPERATION:">OPERATION:</span><br>
           <span class="glitch" data-text="FREE PALESTINE">FREE PALESTINE</span>
         </h2>
@@ -589,7 +644,7 @@
           <div class="flex items-center gap-3 mb-4">
             <span class="text-3xl">&#8383;</span>
             <div>
-              <h3 class="font-cyber text-xl text-hax-red tracking-wider">BITCOIN (BTC)</h3>
+              <h3 class="font-cyber text-sm sm:text-xl text-hax-red tracking-wider">BITCOIN (BTC)</h3>
               <span class="font-terminal text-gray-600 text-xs">Network: Bitcoin Mainnet</span>
             </div>
           </div>
@@ -608,7 +663,7 @@
           <div class="flex items-center gap-3 mb-4">
             <span class="text-3xl font-bold text-gray-400">&#321;</span>
             <div>
-              <h3 class="font-cyber text-xl text-hax-red tracking-wider">LITECOIN (LTC)</h3>
+              <h3 class="font-cyber text-sm sm:text-xl text-hax-red tracking-wider">LITECOIN (LTC)</h3>
               <span class="font-terminal text-gray-600 text-xs">Network: Litecoin Mainnet</span>
             </div>
           </div>
@@ -628,7 +683,7 @@
       <div class="text-center border border-hax-red/20 bg-black/40 py-8 px-4">
         <span class="font-terminal text-gray-500 text-sm tracking-[0.2em]">TOTAL DONATIONS RECEIVED</span>
         <div class="font-cyber text-4xl sm:text-5xl md:text-6xl text-hax-red counter-glow mt-3 tracking-wider">
-          0.42 BTC
+          0 BTC
         </div>
         <div class="font-terminal text-gray-600 text-sm mt-2">&#10003; Verified on-chain &bull; Updated periodically</div>
       </div>
@@ -642,7 +697,7 @@
     <div class="max-w-4xl mx-auto reveal">
       <div class="text-center mb-14">
         <span class="text-hax-green/50 font-terminal text-sm tracking-[0.3em]">// JOIN THE COLLECTIVE</span>
-        <h2 class="font-cyber text-3xl sm:text-4xl md:text-5xl text-hax-green glow-green mt-2 tracking-wider">
+        <h2 class="font-cyber text-2xl sm:text-4xl md:text-5xl text-hax-green glow-green mt-2 tracking-wider">
           <span class="glitch" data-text="KOMUNITAS">KOMUNITAS</span>
         </h2>
         <p class="font-terminal text-gray-500 mt-3 text-sm sm:text-base">Bergabung dengan jaringan underground kami</p>
@@ -846,6 +901,63 @@
       window.addEventListener('scroll', checkReveal);
       window.addEventListener('load', checkReveal);
     })();
+
+    // ===== BLOG MODAL =====
+    var blogData = [
+      {
+        tag: 'HOT', tagColor: 'hax-red', date: '2026-03-15',
+        title: 'BYPASS CLOUDFLARE WAF 2026: TEKNIK TERBARU',
+        content: '<span class="text-hax-green">root@indohaxsec:~$</span> cat /ops/cloudflare-bypass-2026.md\n\n<span class="text-hax-cyan font-bold">== OVERVIEW ==</span>\n\nCloudflare WAF terus diperbarui, tetapi beberapa teknik bypass masih efektif di tahun 2026. Artikel ini membahas metode terbaru yang ditemukan oleh tim riset IndoHaxSec.\n\n<span class="text-hax-cyan font-bold">== TEKNIK 1: HTTP REQUEST SMUGGLING ==</span>\n\nHTTP Request Smuggling memanfaatkan perbedaan parsing antara front-end proxy (Cloudflare) dan back-end server. Dengan mengirim request ambigu menggunakan header Transfer-Encoding dan Content-Length secara bersamaan, kita bisa menyisipkan request kedua yang lolos dari inspeksi WAF.\n\nKuncinya ada di cara Cloudflare memproses chunk encoding vs bagaimana origin server membaca body request.\n\n<span class="text-hax-cyan font-bold">== TEKNIK 2: UNICODE NORMALIZATION ==</span>\n\nBeberapa payload bisa di-encode menggunakan Unicode homoglyph yang secara visual identik tetapi memiliki byte sequence berbeda. WAF signature matching gagal mendeteksi karena pattern tidak cocok, namun server tetap mengeksekusi setelah normalisasi.\n\n<span class="text-hax-cyan font-bold">== TEKNIK 3: CHUNKED ENCODING OBFUSCATION ==</span>\n\nDengan memecah payload menjadi chunk sangat kecil dan menambahkan chunk extension, inspeksi real-time WAF bisa di-bypass karena pattern matching dilakukan per-chunk, bukan pada reassembled body.\n\n<span class="text-hax-red font-bold">== DISCLAIMER ==</span>\n\nArtikel ini untuk tujuan edukasi dan ethical security research. Selalu dapatkan izin tertulis sebelum melakukan pengujian keamanan.\n\n<span class="text-gray-600">// EOF - IndoHaxSec Research Division</span>'
+      },
+      {
+        tag: 'OSINT', tagColor: 'hax-cyan', date: '2026-03-10',
+        title: 'OSINT TEKNIK INDONESIA: PANDUAN LENGKAP',
+        content: '<span class="text-hax-green">root@indohaxsec:~$</span> cat /ops/osint-indonesia.md\n\n<span class="text-hax-cyan font-bold">== OVERVIEW ==</span>\n\nOpen Source Intelligence (OSINT) adalah teknik pengumpulan informasi dari sumber yang tersedia untuk publik. Panduan ini fokus pada konteks Indonesia — sumber data lokal, tools yang efektif, dan framework investigasi.\n\n<span class="text-hax-cyan font-bold">== SUMBER DATA INDONESIA ==</span>\n\n1. <span class="text-hax-green">Data Publik Pemerintah</span> - LPSE, LKPP, data kementerian\n2. <span class="text-hax-green">Registrasi Domain</span> - PANDI WHOIS untuk domain .id\n3. <span class="text-hax-green">Social Media</span> - Platform populer di Indonesia: Instagram, Twitter/X, TikTok, Facebook\n4. <span class="text-hax-green">Forum & Komunitas</span> - Kaskus, Reddit Indonesia, Discord servers\n5. <span class="text-hax-green">Dark Web</span> - Monitoring marketplace dan leak sites\n\n<span class="text-hax-cyan font-bold">== TOOLS YANG DIREKOMENDASIKAN ==</span>\n\n- <span class="text-hax-magenta">Maltego</span> - Graph-based link analysis\n- <span class="text-hax-magenta">SpiderFoot</span> - Automated OSINT collection\n- <span class="text-hax-magenta">Sherlock</span> - Username enumeration across platforms\n- <span class="text-hax-magenta">theHarvester</span> - Email, subdomain, dan IP discovery\n- <span class="text-hax-magenta">IntelX</span> - Intelligence search engine\n\n<span class="text-hax-cyan font-bold">== METHODOLOGY ==</span>\n\nGunakan framework: Define Target → Passive Recon → Active Recon → Data Correlation → Report & Verify\n\n<span class="text-gray-600">// EOF - IndoHaxSec Intel Division</span>'
+      },
+      {
+        tag: 'GUIDE', tagColor: 'hax-magenta', date: '2026-03-05',
+        title: 'DIGITAL RESISTANCE GUIDE: ANONIMITAS TOTAL',
+        content: '<span class="text-hax-green">root@indohaxsec:~$</span> cat /ops/anonymity-guide.md\n\n<span class="text-hax-cyan font-bold">== OVERVIEW ==</span>\n\nDi era surveillance massal, anonimitas digital bukan paranoia — ini kebutuhan. Panduan ini membahas setup lingkungan anonim untuk aktivis, jurnalis, dan security researcher.\n\n<span class="text-hax-cyan font-bold">== LAYER 1: OPERATING SYSTEM ==</span>\n\nGunakan <span class="text-hax-green">Tails OS</span> untuk sesi anonim. Tails berjalan dari USB, merutekan semua traffic melalui Tor, dan tidak meninggalkan jejak di komputer host.\n\nAlternatif: <span class="text-hax-green">Whonix</span> (VM-based) atau <span class="text-hax-green">Qubes OS</span> (security by compartmentalization).\n\n<span class="text-hax-cyan font-bold">== LAYER 2: NETWORK ==</span>\n\n- Gunakan <span class="text-hax-magenta">Tor Browser</span> dengan bridge obfs4 untuk menghindari deteksi\n- VPN trusted (tanpa log, yurisdiksi aman) sebagai layer tambahan\n- Hindari WiFi pribadi — gunakan jaringan publik atau koneksi yang tidak terkait identitas\n\n<span class="text-hax-cyan font-bold">== LAYER 3: KOMUNIKASI ==</span>\n\n- <span class="text-hax-green">Signal</span> untuk pesan terenkripsi (dengan nomor anonim)\n- <span class="text-hax-green">Session</span> untuk chat tanpa nomor telepon\n- <span class="text-hax-green">ProtonMail</span> atau <span class="text-hax-green">Tutanota</span> untuk email terenkripsi\n- PGP/GPG untuk enkripsi file dan komunikasi\n\n<span class="text-hax-cyan font-bold">== LAYER 4: FINANSIAL ==</span>\n\nGunakan cryptocurrency dengan teknik privacy: Monero (XMR) untuk transaksi anonim, atau Bitcoin dengan CoinJoin mixing.\n\n<span class="text-hax-red font-bold">== PERINGATAN ==</span>\n\nTeknologi ini untuk perlindungan privasi yang sah. Jangan gunakan untuk aktivitas ilegal.\n\n<span class="text-gray-600">// EOF - IndoHaxSec Privacy Division</span>'
+      },
+      {
+        tag: 'TOOL', tagColor: 'hax-green', date: '2026-02-28',
+        title: 'INDORECON v3.0: AUTOMATED RECON FRAMEWORK',
+        content: '<span class="text-hax-green">root@indohaxsec:~$</span> cat /ops/indorecon-v3.md\n\n<span class="text-hax-cyan font-bold">== RELEASE NOTES ==</span>\n\nIndoRecon v3.0 adalah tool reconnaissance otomatis yang dikembangkan oleh tim IndoHaxSec. Versi ini membawa peningkatan besar dalam kecepatan, akurasi, dan fitur baru.\n\n<span class="text-hax-cyan font-bold">== FITUR BARU v3.0 ==</span>\n\n1. <span class="text-hax-green">Multi-threaded Subdomain Enumeration</span>\n   Kombinasi passive (crt.sh, SecurityTrails, VirusTotal) dan active (DNS bruteforce) untuk coverage maksimal.\n\n2. <span class="text-hax-green">Smart Port Scanner</span>\n   SYN scan cepat dengan service detection dan version fingerprinting. Support custom port range.\n\n3. <span class="text-hax-green">Technology Detection</span>\n   Identifikasi framework, CMS, web server, WAF, CDN, dan cloud provider secara otomatis.\n\n4. <span class="text-hax-green">Vulnerability Mapping</span>\n   Korelasi otomatis antara detected services dan CVE database.\n\n5. <span class="text-hax-green">Report Generator</span>\n   Output dalam format HTML, JSON, dan Markdown.\n\n<span class="text-hax-cyan font-bold">== INSTALASI ==</span>\n\n<span class="text-hax-magenta">$ git clone https://github.com/indohaxsec/indorecon</span>\n<span class="text-hax-magenta">$ cd indorecon && pip install -r requirements.txt</span>\n<span class="text-hax-magenta">$ python indorecon.py --target example.com --full</span>\n\n<span class="text-hax-cyan font-bold">== KONTRIBUSI ==</span>\n\nIndoRecon adalah open source. Pull request dan bug report sangat diterima di repository GitHub kami.\n\n<span class="text-gray-600">// EOF - IndoHaxSec Dev Division</span>'
+      }
+    ];
+
+    function openBlog(index) {
+      var blog = blogData[index];
+      var modal = document.getElementById('blog-modal');
+      var body = document.getElementById('blog-modal-body');
+      var tagColors = { 'hax-red': '#FF0033', 'hax-cyan': '#00FFFF', 'hax-magenta': '#FF00FF', 'hax-green': '#00FF41' };
+      var c = tagColors[blog.tagColor] || '#00FF41';
+
+      body.innerHTML =
+        '<div class="flex items-center gap-2 mb-4">' +
+          '<span class="px-2 py-0.5 font-terminal text-xs border" style="color:' + c + ';border-color:' + c + '40;background:' + c + '15">' + blog.tag + '</span>' +
+          '<span class="text-gray-600 font-terminal text-xs">' + blog.date + '</span>' +
+        '</div>' +
+        '<h2 class="font-cyber text-lg sm:text-2xl mb-6 tracking-wider" style="color:' + c + '">' + blog.title + '</h2>' +
+        '<div class="terminal-box p-4 sm:p-6 pt-8">' +
+          '<pre class="font-terminal text-sm sm:text-base text-gray-300 leading-relaxed whitespace-pre-wrap break-words">' + blog.content + '</pre>' +
+        '</div>' +
+        '<div class="mt-6 text-center">' +
+          '<button onclick="closeBlog()" class="btn-glitch px-6 py-3 border-2 border-hax-green text-hax-green font-terminal text-base tracking-wider hover:bg-hax-green/10 transition-all">&lt; KEMBALI</button>' +
+        '</div>';
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBlog() {
+      document.getElementById('blog-modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeBlog();
+    });
   </script>
 </body>
 </html>
