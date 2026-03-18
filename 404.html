@@ -37,8 +37,8 @@
       background: #050505;
       color: #c0c0c0;
       font-family: 'Space Mono', monospace;
-      overflow: hidden;
-      height: 100vh;
+      overflow-x: hidden;
+      min-height: 100vh;
     }
     ::selection { background: #FF0033; color: #050505; }
 
@@ -163,36 +163,36 @@
 <body class="scanlines">
   <canvas id="matrix-bg"></canvas>
 
-  <div class="relative z-10 flex items-center justify-center min-h-screen px-4">
+  <div class="relative z-10 flex items-center justify-center min-h-screen px-4 py-20">
     <div class="text-center max-w-2xl w-full">
 
       <!-- 404 number -->
-      <div class="mb-6">
-        <h1 class="font-cyber text-[8rem] sm:text-[12rem] md:text-[14rem] font-black leading-none text-hax-red glitch-404 flicker" style="text-shadow: 0 0 40px rgba(255,0,51,0.5), 0 0 120px rgba(255,0,51,0.15);">
+      <div class="mb-4">
+        <h1 class="font-cyber text-[5rem] sm:text-[8rem] md:text-[10rem] font-black leading-none text-hax-red glitch-404 flicker" style="text-shadow: 0 0 40px rgba(255,0,51,0.5), 0 0 120px rgba(255,0,51,0.15);">
           404
         </h1>
       </div>
 
       <!-- Error title -->
-      <h2 class="font-cyber text-xl sm:text-2xl md:text-3xl text-hax-green tracking-[0.3em] mb-4" style="text-shadow: 0 0 10px rgba(0,255,65,0.5);">
+      <h2 class="font-cyber text-lg sm:text-2xl md:text-3xl text-hax-green tracking-[0.2em] sm:tracking-[0.3em] mb-4" style="text-shadow: 0 0 10px rgba(0,255,65,0.5);">
         ACCESS DENIED
       </h2>
 
       <!-- Terminal log -->
-      <div class="bg-black/70 border border-hax-green/20 p-4 sm:p-6 text-left mb-8 mx-auto max-w-lg relative" style="border-radius: 4px;">
+      <div class="bg-black/70 border border-hax-green/20 p-3 sm:p-4 text-left mb-6 mx-auto max-w-lg relative" style="border-radius: 4px; max-height: 200px; overflow-y: auto;">
         <div class="absolute top-2 left-3 flex gap-1.5">
           <span class="w-2.5 h-2.5 rounded-full bg-hax-red/80 inline-block"></span>
           <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/60 inline-block"></span>
           <span class="w-2.5 h-2.5 rounded-full bg-hax-green/60 inline-block"></span>
         </div>
-        <div class="pt-4 font-terminal text-sm sm:text-base" id="terminal-log"></div>
+        <div class="pt-4 font-terminal text-xs sm:text-sm" id="terminal-log"></div>
       </div>
 
       <!-- Countdown redirect -->
-      <div class="mb-6">
-        <div class="bg-black/70 border border-hax-red/30 px-6 py-4 inline-block" style="border-radius:4px;">
-          <p class="font-terminal text-hax-red text-lg sm:text-xl">
-            [AUTO-REDIRECT] Kembali ke base dalam <span id="countdown" class="text-white font-bold text-2xl">5</span> detik...
+      <div class="mb-4">
+        <div class="bg-black/70 border border-hax-red/30 px-4 sm:px-6 py-3 inline-block" style="border-radius:4px;">
+          <p class="font-terminal text-hax-red text-sm sm:text-lg">
+            [AUTO-REDIRECT] Kembali ke base dalam <span id="countdown" class="text-white font-bold text-lg sm:text-2xl">5</span> detik...
           </p>
           <div class="w-full bg-gray-800 h-1.5 mt-3 rounded overflow-hidden">
             <div id="progress-bar" class="h-full bg-hax-red transition-all duration-1000" style="width:0%"></div>
@@ -201,23 +201,23 @@
       </div>
 
       <!-- Message -->
-      <p class="font-terminal text-gray-500 text-base sm:text-lg mb-8">
+      <p class="font-terminal text-gray-500 text-sm sm:text-base mb-6">
         Halaman yang kamu cari tidak ada di server ini.<br>
         <span class="text-gray-600">Mungkin sudah dihapus, dipindahkan, atau memang tidak pernah ada.</span>
       </p>
 
       <!-- Buttons -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="/" class="btn-hack px-8 py-4 border-2 border-hax-green text-hax-green font-terminal text-lg sm:text-xl tracking-widest hover:bg-hax-green/10 transition-all">
+      <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
+        <a href="/" class="btn-hack w-full sm:w-auto text-center px-6 py-3 border-2 border-hax-green text-hax-green font-terminal text-base sm:text-lg tracking-widest hover:bg-hax-green/10 transition-all">
           &gt; KEMBALI KE BASE
         </a>
-        <button onclick="history.back()" class="btn-hack px-8 py-4 border-2 border-hax-cyan/50 text-hax-cyan font-terminal text-lg sm:text-xl tracking-widest hover:bg-hax-cyan/10 transition-all">
+        <button onclick="history.back()" class="btn-hack w-full sm:w-auto px-6 py-3 border-2 border-hax-cyan/50 text-hax-cyan font-terminal text-base sm:text-lg tracking-widest hover:bg-hax-cyan/10 transition-all">
           &lt; GO BACK
         </button>
       </div>
 
       <!-- Footer -->
-      <p class="font-terminal text-gray-800 text-xs mt-12 tracking-wider">
+      <p class="font-terminal text-gray-800 text-xs mt-8 tracking-wider">
         [ INDOHAXSEC.ONE ] &mdash; Stay Anonymous &bull; No Logs &bull; No Compromise
       </p>
     </div>
@@ -260,6 +260,7 @@
             if (i < line.text.length) {
               span.textContent += line.text[i];
               i++;
+              log.scrollTop = log.scrollHeight;
               setTimeout(typeChar, 12 + Math.random() * 18);
             }
           }
