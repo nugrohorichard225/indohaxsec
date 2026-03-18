@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IndoHaxSec.one | Indonesian Hacker Collective</title>
+  <meta name="description" content="IndoHaxSec - Kolektif hacker Indonesia. Ethical hacking, cybersecurity awareness, digital rights, dan hacktivism untuk keadilan global. Hack the System. Secure the Truth.">
+  <meta name="theme-color" content="#050505">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'hax-dark': '#050505',
+            'hax-green': '#00FF41',
+            'hax-cyan': '#00FFFF',
+            'hax-magenta': '#FF00FF',
+            'hax-red': '#FF0033',
+          },
+          fontFamily: {
+            'terminal': ['"VT323"', 'monospace'],
+            'mono': ['"Space Mono"', 'monospace'],
+            'cyber': ['"Orbitron"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* ===== BASE ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #050505;
+      color: #c0c0c0;
+      font-family: 'Space Mono', monospace;
+      overflow-x: hidden;
+    }
+    ::selection { background: #00FF41; color: #050505; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #050505; }
+    ::-webkit-scrollbar-thumb { background: #00FF41; border-radius: 3px; }
+
+    /* ===== SCANLINES OVERLAY ===== */
+    .scanlines::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 65, 0.015) 2px,
+        rgba(0, 255, 65, 0.015) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ===== CRT NOISE ===== */
+    .crt-noise::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.5;
+    }
+
+    /* ===== GLITCH TEXT ===== */
+    .glitch {
+      position: relative;
+      display: inline-block;
+    }
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
+    }
+    .glitch::before {
+      color: #00FFFF;
+      animation: glitch-1 3s infinite linear alternate-reverse;
+      clip-path: inset(0 0 80% 0);
+    }
+    .glitch::after {
+      color: #FF00FF;
+      animation: glitch-2 2.5s infinite linear alternate-reverse;
+      clip-path: inset(80% 0 0 0);
+    }
+    @keyframes glitch-1 {
+      0% { transform: translate(0); }
+      20% { transform: translate(-3px, 3px); }
+      40% { transform: translate(-3px, -3px); }
+      60% { transform: translate(3px, 3px); }
+      80% { transform: translate(3px, -3px); }
+      100% { transform: translate(0); }
+    }
+    @keyframes glitch-2 {
+      0% { transform: translate(0); }
+      20% { transform: translate(3px, -3px); }
+      40% { transform: translate(3px, 3px); }
+      60% { transform: translate(-3px, -3px); }
+      80% { transform: translate(-3px, 3px); }
+      100% { transform: translate(0); }
+    }
+
+    /* ===== FLICKER ===== */
+    .flicker {
+      animation: flicker 4s infinite;
+    }
+    @keyframes flicker {
+      0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% { opacity: 1; }
+      20%, 21.999%, 63%, 63.999%, 65%, 69.999% { opacity: 0.4; }
+    }
+
+    /* ===== TYPING CURSOR ===== */
+    .typing-cursor::after {
+      content: '█';
+      animation: blink 1s step-end infinite;
+      color: #00FF41;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ===== GLITCH BUTTON ===== */
+    .btn-glitch {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .btn-glitch::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,255,65,0.15), transparent);
+      transition: left 0.5s;
+    }
+    .btn-glitch:hover::before {
+      left: 100%;
+    }
+    .btn-glitch:hover {
+      text-shadow: 2px 0 #FF00FF, -2px 0 #00FFFF;
+      box-shadow: 0 0 20px rgba(0,255,65,0.4), inset 0 0 20px rgba(0,255,65,0.1);
+    }
+
+    .btn-red {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .btn-red::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,0,51,0.2), transparent);
+      transition: left 0.5s;
+    }
+    .btn-red:hover::before {
+      left: 100%;
+    }
+    .btn-red:hover {
+      text-shadow: 2px 0 #FF00FF, -2px 0 #FF0033;
+      box-shadow: 0 0 30px rgba(255,0,51,0.5), inset 0 0 20px rgba(255,0,51,0.1);
+    }
+
+    /* ===== CARD HOVER ===== */
+    .card-hack {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      border: 1px solid rgba(0,255,65,0.1);
+    }
+    .card-hack::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, #00FF41, transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+    .card-hack::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,255,65,0.03) 2px, rgba(0,255,65,0.03) 4px
+      );
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+    .card-hack:hover {
+      border-color: rgba(0,255,65,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 0 30px rgba(0,255,65,0.1), 0 10px 40px rgba(0,0,0,0.5);
+    }
+    .card-hack:hover::before { transform: translateX(100%); }
+    .card-hack:hover::after { opacity: 1; }
+
+    /* ===== PALESTINE SECTION ===== */
+    .palestine-bg {
+      background:
+        linear-gradient(135deg, rgba(5,5,5,0.95), rgba(30,0,0,0.9)),
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px, transparent 40px,
+          rgba(255,0,51,0.03) 40px, rgba(255,0,51,0.03) 80px
+        );
+    }
+    .palestine-border {
+      border-image: linear-gradient(to right, #000, #CE1126, #fff, #009736) 1;
+    }
+
+    /* ===== GLOW EFFECTS ===== */
+    .glow-green { text-shadow: 0 0 10px rgba(0,255,65,0.5), 0 0 40px rgba(0,255,65,0.2); }
+    .glow-cyan { text-shadow: 0 0 10px rgba(0,255,255,0.5), 0 0 40px rgba(0,255,255,0.2); }
+    .glow-red { text-shadow: 0 0 10px rgba(255,0,51,0.5), 0 0 40px rgba(255,0,51,0.2); }
+
+    /* ===== TERMINAL BOX ===== */
+    .terminal-box {
+      background: rgba(0,0,0,0.8);
+      border: 1px solid rgba(0,255,65,0.3);
+      border-radius: 4px;
+      position: relative;
+    }
+    .terminal-box::before {
+      content: '● ● ●';
+      position: absolute;
+      top: 8px; left: 12px;
+      font-size: 8px;
+      letter-spacing: 4px;
+      color: #00FF41;
+      opacity: 0.6;
+    }
+
+    /* ===== HERO CANVAS ===== */
+    #matrix-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      opacity: 0.3;
+    }
+
+    /* ===== MOBILE NAV ===== */
+    .mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s ease-in-out;
+    }
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+
+    /* ===== SECTION REVEAL ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== QR PLACEHOLDER ===== */
+    .qr-placeholder {
+      width: 140px; height: 140px;
+      border: 2px dashed rgba(255,0,51,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.5);
+      font-family: 'VT323', monospace;
+      color: #FF0033;
+      font-size: 14px;
+    }
+
+    /* ===== PULSE BORDER ===== */
+    .pulse-border {
+      animation: pulse-b 2s infinite;
+    }
+    @keyframes pulse-b {
+      0%, 100% { border-color: rgba(255,0,51,0.3); }
+      50% { border-color: rgba(255,0,51,0.8); }
+    }
+
+    /* ===== COUNTER ===== */
+    .counter-glow {
+      text-shadow: 0 0 20px rgba(255,0,51,0.8), 0 0 60px rgba(255,0,51,0.3);
+    }
+  </style>
+</head>
+<body class="scanlines crt-noise">
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300" style="background: rgba(5,5,5,0.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,255,65,0.1);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="#beranda" class="flex items-center gap-2">
+          <span class="text-hax-green font-terminal text-xl sm:text-2xl glitch flicker" data-text="INDOHAXSEC.ONE">INDOHAXSEC.ONE</span>
+        </a>
+        <!-- Desktop Menu -->
+        <div class="hidden lg:flex items-center gap-6">
+          <a href="#beranda" class="text-gray-400 hover:text-hax-green font-mono text-sm transition-colors">Beranda</a>
+          <a href="#tentang" class="text-gray-400 hover:text-hax-green font-mono text-sm transition-colors">Tentang Kami</a>
+          <a href="#tools" class="text-gray-400 hover:text-hax-green font-mono text-sm transition-colors">Tools</a>
+          <a href="#blog" class="text-gray-400 hover:text-hax-green font-mono text-sm transition-colors">Blog</a>
+          <a href="#komunitas" class="text-gray-400 hover:text-hax-green font-mono text-sm transition-colors">Komunitas</a>
+          <a href="#donate" class="btn-red px-4 py-2 bg-hax-red/20 border border-hax-red text-hax-red font-terminal text-lg tracking-wider hover:bg-hax-red/30 transition-all">DONATE</a>
+        </div>
+        <!-- Mobile Hamburger -->
+        <button id="menu-toggle" class="lg:hidden text-hax-green focus:outline-none" aria-label="Toggle menu">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-64 h-full lg:hidden" style="background: rgba(5,5,5,0.97); border-left: 1px solid rgba(0,255,65,0.2);">
+      <div class="flex justify-end p-4">
+        <button id="menu-close" class="text-hax-green focus:outline-none" aria-label="Close menu">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="flex flex-col gap-4 px-6 mt-4">
+        <a href="#beranda" class="nav-link text-gray-400 hover:text-hax-green font-mono text-lg transition-colors py-2 border-b border-gray-800">Beranda</a>
+        <a href="#tentang" class="nav-link text-gray-400 hover:text-hax-green font-mono text-lg transition-colors py-2 border-b border-gray-800">Tentang Kami</a>
+        <a href="#tools" class="nav-link text-gray-400 hover:text-hax-green font-mono text-lg transition-colors py-2 border-b border-gray-800">Tools</a>
+        <a href="#blog" class="nav-link text-gray-400 hover:text-hax-green font-mono text-lg transition-colors py-2 border-b border-gray-800">Blog</a>
+        <a href="#komunitas" class="nav-link text-gray-400 hover:text-hax-green font-mono text-lg transition-colors py-2 border-b border-gray-800">Komunitas</a>
+        <a href="#donate" class="nav-link btn-red inline-block text-center mt-4 px-4 py-3 bg-hax-red/20 border border-hax-red text-hax-red font-terminal text-xl tracking-wider">DONATE</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section id="beranda" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <canvas id="matrix-canvas"></canvas>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-hax-dark z-[1]"></div>
+    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+      <!-- Main Title -->
+      <div class="mb-4">
+        <span class="text-hax-green/40 font-terminal text-sm sm:text-base tracking-[0.3em]">[ SYSTEM BREACH DETECTED ]</span>
+      </div>
+      <h1 class="font-cyber text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-wider mb-4">
+        <span id="hero-title" class="glitch glow-green text-hax-green" data-text="INDOHAXSEC"></span>
+        <span class="typing-cursor"></span>
+      </h1>
+      <p class="font-mono text-hax-cyan text-base sm:text-lg md:text-xl tracking-[0.15em] mb-3 glow-cyan flicker">
+        Indonesian Cyber Security Collective
+      </p>
+      <p class="font-terminal text-gray-500 text-lg sm:text-xl md:text-2xl tracking-wider mb-10">
+        Hack the System &bull; Secure the Truth &bull; Resist Oppression
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="#tentang" class="btn-glitch px-8 py-4 border-2 border-hax-green text-hax-green font-terminal text-xl tracking-widest hover:bg-hax-green/10 transition-all">
+          &gt; ENTER THE GRID
+        </a>
+        <a href="#donate" class="btn-red px-8 py-4 border-2 border-hax-red bg-hax-red/10 text-hax-red font-terminal text-xl tracking-widest hover:bg-hax-red/20 transition-all">
+          &#9733; SUPPORT PALESTINE
+        </a>
+      </div>
+      <div class="mt-12 text-gray-600 font-terminal text-sm animate-bounce">
+        &#9660; SCROLL DOWN &#9660;
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ABOUT US ==================== -->
+  <section id="tentang" class="py-20 sm:py-28 px-4 relative">
+    <div class="max-w-5xl mx-auto reveal">
+      <div class="text-center mb-12">
+        <span class="text-hax-green/50 font-terminal text-sm tracking-[0.3em]">// ABOUT US</span>
+        <h2 class="font-cyber text-3xl sm:text-4xl md:text-5xl text-hax-green glow-green mt-2 tracking-wider">
+          <span class="glitch" data-text="TENTANG_KAMI">TENTANG_KAMI</span>
+        </h2>
+      </div>
+      <div class="terminal-box p-6 sm:p-10 pt-10">
+        <p class="font-terminal text-lg sm:text-xl md:text-2xl text-gray-300 leading-relaxed">
+          <span class="text-hax-green">root@indohaxsec:~$</span> cat /etc/manifesto.txt<br><br>
+          <span class="text-hax-cyan font-bold">IndoHaxSec</span> adalah kolektif hacker Indonesia yang fokus pada
+          <span class="text-hax-green">ethical hacking</span>,
+          <span class="text-hax-cyan">cybersecurity awareness</span>,
+          <span class="text-hax-magenta">digital rights</span>, dan
+          <span class="text-hax-green">hacktivism</span> untuk keadilan global.<br><br>
+          Kami percaya bahwa keamanan siber bukan hanya soal teknis — ini tentang
+          <span class="text-hax-cyan">kebebasan informasi</span>,
+          <span class="text-hax-green">perlindungan privasi</span>, dan
+          <span class="text-hax-magenta">perlawanan terhadap penindasan digital</span>.<br><br>
+          <span class="text-gray-600">// We don't hack for ego. We hack for justice.</span>
+        </p>
+      </div>
+      <!-- Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+        <div class="text-center p-4 border border-hax-green/10 bg-black/30">
+          <div class="font-cyber text-2xl sm:text-3xl text-hax-green glow-green">250+</div>
+          <div class="font-terminal text-gray-500 text-sm mt-1">MEMBERS</div>
+        </div>
+        <div class="text-center p-4 border border-hax-cyan/10 bg-black/30">
+          <div class="font-cyber text-2xl sm:text-3xl text-hax-cyan glow-cyan">100+</div>
+          <div class="font-terminal text-gray-500 text-sm mt-1">OPERATIONS</div>
+        </div>
+        <div class="text-center p-4 border border-hax-magenta/10 bg-black/30">
+          <div class="font-cyber text-2xl sm:text-3xl text-hax-magenta" style="text-shadow: 0 0 10px rgba(255,0,255,0.5);">50+</div>
+          <div class="font-terminal text-gray-500 text-sm mt-1">TOOLS BUILT</div>
+        </div>
+        <div class="text-center p-4 border border-hax-green/10 bg-black/30">
+          <div class="font-cyber text-2xl sm:text-3xl text-hax-green glow-green">24/7</div>
+          <div class="font-terminal text-gray-500 text-sm mt-1">ONLINE</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== OUR ARSENAL ==================== -->
+  <section id="tools" class="py-20 sm:py-28 px-4 relative" style="background: linear-gradient(180deg, #050505, #080808, #050505);">
+    <div class="max-w-6xl mx-auto reveal">
+      <div class="text-center mb-14">
+        <span class="text-hax-green/50 font-terminal text-sm tracking-[0.3em]">// OUR ARSENAL</span>
+        <h2 class="font-cyber text-3xl sm:text-4xl md:text-5xl text-hax-green glow-green mt-2 tracking-wider">
+          <span class="glitch" data-text="TOOLS_&_RESOURCES">TOOLS_&_RESOURCES</span>
+        </h2>
+        <p class="font-terminal text-gray-500 mt-3 text-sm sm:text-base">Senjata digital kami untuk offensive & defensive security</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="card-hack bg-black/50 p-6 sm:p-8 group">
+          <div class="text-3xl sm:text-4xl mb-4 text-hax-green group-hover:text-hax-cyan transition-colors">&#9760;</div>
+          <h3 class="font-cyber text-lg text-hax-green mb-2 tracking-wider">WEB PENTESTING</h3>
+          <p class="font-terminal text-gray-500 text-sm leading-relaxed">SQL Injection, XSS, CSRF, SSRF, dan eksploitasi web app modern. Bypass WAF & endpoint fuzzing.</p>
+          <div class="mt-4 font-terminal text-hax-green/40 text-xs">[OFFENSIVE]</div>
+        </div>
+        <!-- Card 2 -->
+        <div class="card-hack bg-black/50 p-6 sm:p-8 group">
+          <div class="text-3xl sm:text-4xl mb-4 text-hax-cyan group-hover:text-hax-green transition-colors">&#9881;</div>
+          <h3 class="font-cyber text-lg text-hax-cyan mb-2 tracking-wider">NETWORK HACKING</h3>
+          <p class="font-terminal text-gray-500 text-sm leading-relaxed">Network scanning, MITM attacks, packet sniffing, protocol exploitation, dan wireless pentesting.</p>
+          <div class="mt-4 font-terminal text-hax-cyan/40 text-xs">[OFFENSIVE]</div>
+        </div>
+        <!-- Card 3 -->
+        <div class="card-hack bg-black/50 p-6 sm:p-8 group">
+          <div class="text-3xl sm:text-4xl mb-4 text-hax-magenta group-hover:text-hax-green transition-colors">&#128269;</div>
+          <h3 class="font-cyber text-lg text-hax-magenta mb-2 tracking-wider">OSINT</h3>
+          <p class="font-terminal text-gray-500 text-sm leading-relaxed">Open Source Intelligence gathering, social engineering recon, data correlation, dan digital footprinting.</p>
+          <div class="mt-4 font-terminal text-hax-magenta/40 text-xs">[RECON]</div>
+        </div>
+        <!-- Card 4 -->
+        <div class="card-hack bg-black/50 p-6 sm:p-8 group">
+          <div class="text-3xl sm:text-4xl mb-4 text-hax-green group-hover:text-hax-cyan transition-colors">&#128273;</div>
+          <h3 class="font-cyber text-lg text-hax-green mb-2 tracking-wider">CRYPTOGRAPHY</h3>
+          <p class="font-terminal text-gray-500 text-sm leading-relaxed">Enkripsi, dekripsi, hash cracking, steganografi, dan implementasi secure communication channels.</p>
+          <div class="mt-4 font-terminal text-hax-green/40 text-xs">[DEFENSIVE]</div>
+        </div>
+        <!-- Card 5 -->
+        <div class="card-hack bg-black/50 p-6 sm:p-8 group">
+          <div class="text-3xl sm:text-4xl mb-4 text-hax-cyan group-hover:text-hax-magenta transition-colors">&#128737;</div>
+          <h3 class="font-cyber text-lg text-hax-cyan mb-2 tracking-wider">PRIVACY TOOLS</h3>
+          <p class="font-terminal text-gray-500 text-sm leading-relaxed">Anonymization, anti-tracking, secure OS setup, VPN/Tor configuration, dan metadata removal tools.</p>
+          <div class="mt-4 font-terminal text-hax-cyan/40 text-xs">[DEFENSIVE]</div>
+        </div>
+        <!-- Card 6 -->
+        <div class="card-hack bg-black/50 p-6 sm:p-8 group">
+          <div class="text-3xl sm:text-4xl mb-4 text-hax-magenta group-hover:text-hax-green transition-colors">&#9889;</div>
+          <h3 class="font-cyber text-lg text-hax-magenta mb-2 tracking-wider">EXPLOIT DEV</h3>
+          <p class="font-terminal text-gray-500 text-sm leading-relaxed">Buffer overflow, ROP chains, shellcoding, reverse engineering, dan zero-day research framework.</p>
+          <div class="mt-4 font-terminal text-hax-magenta/40 text-xs">[ADVANCED]</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== LATEST OPERATIONS (BLOG) ==================== -->
+  <section id="blog" class="py-20 sm:py-28 px-4 relative">
+    <div class="max-w-6xl mx-auto reveal">
+      <div class="text-center mb-14">
+        <span class="text-hax-green/50 font-terminal text-sm tracking-[0.3em]">// LATEST OPERATIONS</span>
+        <h2 class="font-cyber text-3xl sm:text-4xl md:text-5xl text-hax-green glow-green mt-2 tracking-wider">
+          <span class="glitch" data-text="BLOG_/_INTEL">BLOG_/_INTEL</span>
+        </h2>
+        <p class="font-terminal text-gray-500 mt-3 text-sm sm:text-base">Laporan operasi, tutorial, dan threat intelligence terbaru</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- Blog 1 -->
+        <article class="card-hack bg-black/50 p-6 sm:p-8 group cursor-pointer">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="px-2 py-0.5 bg-hax-red/20 text-hax-red font-terminal text-xs border border-hax-red/30">HOT</span>
+            <span class="text-gray-600 font-terminal text-xs">2026-03-15</span>
+          </div>
+          <h3 class="font-cyber text-base sm:text-lg text-hax-green group-hover:text-hax-cyan transition-colors tracking-wider mb-2">
+            BYPASS CLOUDFLARE WAF 2026: TEKNIK TERBARU
+          </h3>
+          <p class="font-terminal text-gray-500 text-sm leading-relaxed">Analisis mendalam bypass WAF Cloudflare menggunakan teknik HTTP smuggling dan encoding tricks terbaru...</p>
+          <div class="mt-4 font-terminal text-hax-green/60 text-sm group-hover:text-hax-green transition-colors">&gt; read_more --full</div>
+        </article>
+        <!-- Blog 2 -->
+        <article class="card-hack bg-black/50 p-6 sm:p-8 group cursor-pointer">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="px-2 py-0.5 bg-hax-cyan/20 text-hax-cyan font-terminal text-xs border border-hax-cyan/30">OSINT</span>
+            <span class="text-gray-600 font-terminal text-xs">2026-03-10</span>
+          </div>
+          <h3 class="font-cyber text-base sm:text-lg text-hax-cyan group-hover:text-hax-green transition-colors tracking-wider mb-2">
+            OSINT TEKNIK INDONESIA: PANDUAN LENGKAP
+          </h3>
+          <p class="font-terminal text-gray-500 text-sm leading-relaxed">Framework OSINT untuk investigasi digital di Indonesia — dari data publik, social media, hingga dark web recon...</p>
+          <div class="mt-4 font-terminal text-hax-cyan/60 text-sm group-hover:text-hax-cyan transition-colors">&gt; read_more --full</div>
+        </article>
+        <!-- Blog 3 -->
+        <article class="card-hack bg-black/50 p-6 sm:p-8 group cursor-pointer">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="px-2 py-0.5 bg-hax-magenta/20 text-hax-magenta font-terminal text-xs border border-hax-magenta/30">GUIDE</span>
+            <span class="text-gray-600 font-terminal text-xs">2026-03-05</span>
+          </div>
+          <h3 class="font-cyber text-base sm:text-lg text-hax-magenta group-hover:text-hax-green transition-colors tracking-wider mb-2">
+            DIGITAL RESISTANCE GUIDE: ANONIMITAS TOTAL
+          </h3>
+          <p class="font-terminal text-gray-500 text-sm leading-relaxed">Setup lingkungan anonim sempurna — Tails OS, Tor bridges, cryptocurrency mixing, dan secure communication...</p>
+          <div class="mt-4 font-terminal text-hax-magenta/60 text-sm group-hover:text-hax-magenta transition-colors">&gt; read_more --full</div>
+        </article>
+        <!-- Blog 4 -->
+        <article class="card-hack bg-black/50 p-6 sm:p-8 group cursor-pointer">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="px-2 py-0.5 bg-hax-green/20 text-hax-green font-terminal text-xs border border-hax-green/30">TOOL</span>
+            <span class="text-gray-600 font-terminal text-xs">2026-02-28</span>
+          </div>
+          <h3 class="font-cyber text-base sm:text-lg text-hax-green group-hover:text-hax-cyan transition-colors tracking-wider mb-2">
+            INDORECON v3.0: AUTOMATED RECON FRAMEWORK
+          </h3>
+          <p class="font-terminal text-gray-500 text-sm leading-relaxed">Release tool reconnaissance otomatis karya IndoHaxSec — subdomain enum, port scan, tech detection dalam satu command...</p>
+          <div class="mt-4 font-terminal text-hax-green/60 text-sm group-hover:text-hax-green transition-colors">&gt; read_more --full</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== DONATE – SUPPORT PALESTINE ==================== -->
+  <section id="donate" class="py-20 sm:py-28 px-4 relative palestine-bg">
+    <!-- Top red line -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-hax-red to-transparent"></div>
+    <div class="max-w-5xl mx-auto reveal">
+      <div class="text-center mb-10 sm:mb-14">
+        <span class="text-hax-red/70 font-terminal text-sm tracking-[0.3em] flicker">// HUMANITARIAN OPERATION</span>
+        <h2 class="font-cyber text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-hax-red glow-red mt-3 tracking-wider">
+          <span class="glitch" data-text="OPERATION:">OPERATION:</span><br>
+          <span class="glitch" data-text="FREE PALESTINE">FREE PALESTINE</span>
+        </h2>
+        <!-- Palestine flag colors bar -->
+        <div class="flex justify-center mt-6 gap-0">
+          <div class="w-16 sm:w-24 h-1.5" style="background: #000;"></div>
+          <div class="w-16 sm:w-24 h-1.5" style="background: #fff;"></div>
+          <div class="w-16 sm:w-24 h-1.5" style="background: #009736;"></div>
+          <div class="w-16 sm:w-24 h-1.5" style="background: #CE1126;"></div>
+        </div>
+      </div>
+
+      <div class="terminal-box p-6 sm:p-10 pt-10 mb-10 border-hax-red/30" style="border-color: rgba(255,0,51,0.3);">
+        <p class="font-terminal text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed text-center">
+          Kami mendukung perjuangan rakyat <span class="text-hax-red font-bold">Palestina</span>.
+          Setiap donasi <span class="text-hax-cyan">Bitcoin</span> dan <span class="text-hax-cyan">Litecoin</span>
+          akan disalurkan <span class="text-hax-green font-bold">100%</span> untuk bantuan kemanusiaan
+          dan <span class="text-hax-magenta">digital resistance</span>.
+        </p>
+      </div>
+
+      <!-- Donation Boxes -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+        <!-- BTC -->
+        <div class="border-2 border-hax-red/30 pulse-border bg-black/60 p-6 sm:p-8">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-3xl">&#8383;</span>
+            <div>
+              <h3 class="font-cyber text-xl text-hax-red tracking-wider">BITCOIN (BTC)</h3>
+              <span class="font-terminal text-gray-600 text-xs">Network: Bitcoin Mainnet</span>
+            </div>
+          </div>
+          <div class="bg-black/80 border border-hax-red/20 p-4 mb-4 overflow-x-auto">
+            <code id="btc-address" class="font-terminal text-hax-green text-sm sm:text-base break-all select-all">bc1ql6mxrpw6hgcjlt9ny4f9m9qj5c9n8q6fqp0r8qdvyxeyd6arvq7qt0yzdh</code>
+          </div>
+          <button onclick="copyAddress('btc-address')" class="btn-red w-full py-3 border border-hax-red text-hax-red font-terminal text-lg tracking-wider hover:bg-hax-red/20 transition-all flex items-center justify-center gap-2">
+            <span>&#9112;</span> COPY BTC ADDRESS
+          </button>
+          <div class="flex justify-center mt-6">
+            <img src="/btc.jpg" alt="Bitcoin QR Code" class="w-36 h-36 border-2 border-hax-red/40 object-contain bg-white p-1">
+          </div>
+        </div>
+        <!-- LTC -->
+        <div class="border-2 border-hax-red/30 pulse-border bg-black/60 p-6 sm:p-8">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-3xl font-bold text-gray-400">&#321;</span>
+            <div>
+              <h3 class="font-cyber text-xl text-hax-red tracking-wider">LITECOIN (LTC)</h3>
+              <span class="font-terminal text-gray-600 text-xs">Network: Litecoin Mainnet</span>
+            </div>
+          </div>
+          <div class="bg-black/80 border border-hax-red/20 p-4 mb-4 overflow-x-auto">
+            <code id="ltc-address" class="font-terminal text-hax-green text-sm sm:text-base break-all select-all">ltc1q9ql9dvznmlka3k0mjatlt7kppj8qu4gu8z9ef9qcrhdewhja7xnsw5059g</code>
+          </div>
+          <button onclick="copyAddress('ltc-address')" class="btn-red w-full py-3 border border-hax-red text-hax-red font-terminal text-lg tracking-wider hover:bg-hax-red/20 transition-all flex items-center justify-center gap-2">
+            <span>&#9112;</span> COPY LTC ADDRESS
+          </button>
+          <div class="flex justify-center mt-6">
+            <img src="/ltc.jpg" alt="Litecoin QR Code" class="w-36 h-36 border-2 border-hax-red/40 object-contain bg-white p-1">
+          </div>
+        </div>
+      </div>
+
+      <!-- Donation Counter -->
+      <div class="text-center border border-hax-red/20 bg-black/40 py-8 px-4">
+        <span class="font-terminal text-gray-500 text-sm tracking-[0.2em]">TOTAL DONATIONS RECEIVED</span>
+        <div class="font-cyber text-4xl sm:text-5xl md:text-6xl text-hax-red counter-glow mt-3 tracking-wider">
+          0.42 BTC
+        </div>
+        <div class="font-terminal text-gray-600 text-sm mt-2">&#10003; Verified on-chain &bull; Updated periodically</div>
+      </div>
+    </div>
+    <!-- Bottom red line -->
+    <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-hax-red to-transparent"></div>
+  </section>
+
+  <!-- ==================== COMMUNITY ==================== -->
+  <section id="komunitas" class="py-20 sm:py-28 px-4 relative" style="background: linear-gradient(180deg, #050505, #080808, #050505);">
+    <div class="max-w-4xl mx-auto reveal">
+      <div class="text-center mb-14">
+        <span class="text-hax-green/50 font-terminal text-sm tracking-[0.3em]">// JOIN THE COLLECTIVE</span>
+        <h2 class="font-cyber text-3xl sm:text-4xl md:text-5xl text-hax-green glow-green mt-2 tracking-wider">
+          <span class="glitch" data-text="KOMUNITAS">KOMUNITAS</span>
+        </h2>
+        <p class="font-terminal text-gray-500 mt-3 text-sm sm:text-base">Bergabung dengan jaringan underground kami</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Telegram -->
+        <a href="#" class="card-hack bg-black/50 p-6 text-center group block">
+          <div class="text-4xl mb-3 group-hover:scale-110 transition-transform inline-block">&#9993;</div>
+          <h3 class="font-cyber text-sm text-hax-cyan tracking-wider mb-1">TELEGRAM</h3>
+          <p class="font-terminal text-gray-600 text-xs">Encrypted Comms</p>
+          <div class="mt-3 font-terminal text-hax-cyan/50 text-xs group-hover:text-hax-cyan transition-colors">&gt; join_channel</div>
+        </a>
+        <!-- X / Twitter -->
+        <a href="#" class="card-hack bg-black/50 p-6 text-center group block">
+          <div class="text-4xl mb-3 group-hover:scale-110 transition-transform inline-block font-bold text-white">&#120143;</div>
+          <h3 class="font-cyber text-sm text-hax-green tracking-wider mb-1">X / TWITTER</h3>
+          <p class="font-terminal text-gray-600 text-xs">Public Intel Feed</p>
+          <div class="mt-3 font-terminal text-hax-green/50 text-xs group-hover:text-hax-green transition-colors">&gt; follow_us</div>
+        </a>
+        <!-- Discord -->
+        <a href="#" class="card-hack bg-black/50 p-6 text-center group block">
+          <div class="text-4xl mb-3 group-hover:scale-110 transition-transform inline-block">&#127918;</div>
+          <h3 class="font-cyber text-sm text-hax-magenta tracking-wider mb-1">DISCORD</h3>
+          <p class="font-terminal text-gray-600 text-xs">HQ Server</p>
+          <div class="mt-3 font-terminal text-hax-magenta/50 text-xs group-hover:text-hax-magenta transition-colors">&gt; join_server</div>
+        </a>
+        <!-- GitHub -->
+        <a href="#" class="card-hack bg-black/50 p-6 text-center group block">
+          <div class="text-4xl mb-3 group-hover:scale-110 transition-transform inline-block">&#128187;</div>
+          <h3 class="font-cyber text-sm text-hax-green tracking-wider mb-1">GITHUB</h3>
+          <p class="font-terminal text-gray-600 text-xs">Open Source Arsenal</p>
+          <div class="mt-3 font-terminal text-hax-green/50 text-xs group-hover:text-hax-green transition-colors">&gt; view_repos</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="py-10 px-4 border-t border-gray-900">
+    <div class="max-w-5xl mx-auto text-center">
+      <p class="font-terminal text-hax-green/60 text-sm sm:text-base tracking-[0.2em] mb-3 flicker">
+        Stay Anonymous &bull; No Logs &bull; No Compromise
+      </p>
+      <p class="font-terminal text-gray-700 text-xs tracking-wider">
+        Copyright &copy; 2026 IndoHaxSec.one &mdash; All Rights Reserved
+      </p>
+      <div class="mt-4 font-terminal text-gray-800 text-xs">
+        <span class="text-hax-green/30">[</span> root@indohaxsec <span class="text-hax-green/30">]</span>
+        <span class="text-gray-700">~</span>
+        <span class="text-hax-green/30">$</span>
+        <span class="text-gray-600">_</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== TOAST NOTIFICATION ==================== -->
+  <div id="toast" class="fixed bottom-6 right-6 z-[100] bg-hax-green/10 border border-hax-green text-hax-green font-terminal text-sm px-6 py-3 opacity-0 transition-all duration-300 pointer-events-none" style="transform: translateY(20px);">
+    &#10003; Address copied to clipboard!
+  </div>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    // ===== MATRIX DIGITAL RAIN =====
+    (function() {
+      const canvas = document.getElementById('matrix-canvas');
+      const ctx = canvas.getContext('2d');
+
+      function resize() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>{}[]|\\/:;!@#$%^&*';
+      const fontSize = 14;
+      let columns = Math.floor(canvas.width / fontSize);
+      let drops = new Array(columns).fill(1);
+
+      function draw() {
+        ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#00FF41';
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = chars[Math.floor(Math.random() * chars.length)];
+          const x = i * fontSize;
+          const y = drops[i] * fontSize;
+          ctx.globalAlpha = Math.random() * 0.5 + 0.1;
+          ctx.fillText(text, x, y);
+          ctx.globalAlpha = 1;
+
+          if (y > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      // Recalculate on resize
+      window.addEventListener('resize', function() {
+        columns = Math.floor(canvas.width / fontSize);
+        drops = new Array(columns).fill(1);
+      });
+
+      setInterval(draw, 50);
+    })();
+
+    // ===== TYPING EFFECT =====
+    (function() {
+      const el = document.getElementById('hero-title');
+      const text = 'INDOHAXSEC';
+      let idx = 0;
+      el.textContent = '';
+
+      function type() {
+        if (idx < text.length) {
+          el.textContent += text[idx];
+          el.setAttribute('data-text', el.textContent);
+          idx++;
+          setTimeout(type, 120 + Math.random() * 80);
+        }
+      }
+
+      // Delay start for effect
+      setTimeout(type, 800);
+    })();
+
+    // ===== COPY TO CLIPBOARD =====
+    function copyAddress(id) {
+      const el = document.getElementById(id);
+      const text = el.textContent.trim();
+      navigator.clipboard.writeText(text).then(function() {
+        showToast();
+      }).catch(function() {
+        // Fallback
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        try {
+          document.execCommand('copy');
+          showToast();
+        } catch(e) { /* silently fail */ }
+        sel.removeAllRanges();
+      });
+    }
+
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateY(0)';
+      setTimeout(function() {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+      }, 2000);
+    }
+
+    // ===== MOBILE MENU =====
+    (function() {
+      const toggle = document.getElementById('menu-toggle');
+      const close = document.getElementById('menu-close');
+      const menu = document.getElementById('mobile-menu');
+      const links = menu.querySelectorAll('.nav-link');
+
+      toggle.addEventListener('click', function() { menu.classList.add('active'); });
+      close.addEventListener('click', function() { menu.classList.remove('active'); });
+      links.forEach(function(link) {
+        link.addEventListener('click', function() { menu.classList.remove('active'); });
+      });
+    })();
+
+    // ===== NAVBAR SCROLL EFFECT =====
+    (function() {
+      const nav = document.getElementById('navbar');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 100) {
+          nav.style.background = 'rgba(5,5,5,0.95)';
+          nav.style.borderBottomColor = 'rgba(0,255,65,0.2)';
+        } else {
+          nav.style.background = 'rgba(5,5,5,0.85)';
+          nav.style.borderBottomColor = 'rgba(0,255,65,0.1)';
+        }
+      });
+    })();
+
+    // ===== SCROLL REVEAL =====
+    (function() {
+      const reveals = document.querySelectorAll('.reveal');
+      function checkReveal() {
+        reveals.forEach(function(el) {
+          const top = el.getBoundingClientRect().top;
+          const trigger = window.innerHeight * 0.85;
+          if (top < trigger) {
+            el.classList.add('visible');
+          }
+        });
+      }
+      window.addEventListener('scroll', checkReveal);
+      window.addEventListener('load', checkReveal);
+    })();
+  </script>
+</body>
+</html>
