@@ -308,9 +308,8 @@
 
     /* ===== MOBILE FIX ===== */
     * { word-break: break-word; }
-    .font-cyber { word-break: break-all; }
     @media (max-width: 480px) {
-      .font-cyber { font-size: inherit; letter-spacing: 0.05em !important; }
+      .font-cyber { word-break: break-all; }
       h1.font-cyber { font-size: 2.5rem !important; letter-spacing: 0.05em !important; }
       h2.font-cyber { font-size: 1.5rem !important; }
       h3.font-cyber { font-size: 0.8rem !important; }
@@ -410,8 +409,8 @@
       <div class="mb-4">
         <span class="text-hax-green/40 font-terminal text-sm sm:text-base tracking-[0.3em]">[ SYSTEM BREACH DETECTED ]</span>
       </div>
-      <h1 class="font-cyber text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black tracking-wider mb-4 max-w-full">
-        <span id="hero-title" class="glitch glow-green text-hax-green" data-text="INDOHAXSEC"></span>
+      <h1 class="font-cyber text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black tracking-wider mb-4">
+        <span id="hero-title" class="glitch glow-green text-hax-green inline-block whitespace-nowrap" data-text="INDOHAXSEC"></span>
         <span class="typing-cursor"></span>
       </h1>
       <p class="font-mono text-hax-cyan text-sm sm:text-lg md:text-xl tracking-[0.05em] sm:tracking-[0.15em] mb-3 glow-cyan flicker">
