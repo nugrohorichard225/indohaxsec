@@ -1095,7 +1095,7 @@
   <div class="music-unlock-overlay" id="music-unlock-overlay"></div>
 
   <script>
-    // Background Music Player with mobile autoplay bypass
+    // Background Music Player — autoplay on all devices
     (function() {
       var playlist = [
         { src: '/music/track1.mp3', name: 'Hackers - Join The Cyberwar' },
@@ -1105,7 +1105,8 @@
 
       var currentTrack = 0;
       var audio = new Audio();
-      audio.volume = 0.4;
+      var targetVolume = 0.4;
+      audio.volume = targetVolume;
       audio.preload = 'auto';
 
       var titleEl = document.getElementById('mp-title');
@@ -1117,7 +1118,19 @@
       var overlay = document.getElementById('music-unlock-overlay');
 
       var isPlaying = false;
-      var userInteracted = false;
+      var audioUnlocked = false;
+
+      function setPlayingUI() {
+        isPlaying = true;
+        playBtn.innerHTML = '&#9646;&#9646;';
+        eqEl.classList.add('playing');
+      }
+
+      function setPausedUI() {
+        isPlaying = false;
+        playBtn.innerHTML = '&#9654;';
+        eqEl.classList.remove('playing');
+      }
 
       function loadTrack(index) {
         currentTrack = index;
@@ -1129,21 +1142,16 @@
         var p = audio.play();
         if (p && typeof p.then === 'function') {
           p.then(function() {
-            isPlaying = true;
-            playBtn.innerHTML = '&#9646;&#9646;';
-            eqEl.classList.add('playing');
+            setPlayingUI();
           }).catch(function() {
-            // Autoplay blocked - will retry on user interaction
-            isPlaying = false;
+            setPausedUI();
           });
         }
       }
 
       function pauseAudio() {
         audio.pause();
-        isPlaying = false;
-        playBtn.innerHTML = '&#9654;';
-        eqEl.classList.remove('playing');
+        setPausedUI();
       }
 
       function nextTrack() {
@@ -1162,68 +1170,94 @@
       audio.addEventListener('ended', nextTrack);
 
       // Controls
-      playBtn.addEventListener('click', function() {
+      playBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
         if (isPlaying) { pauseAudio(); } else { playAudio(); }
       });
-      nextBtn.addEventListener('click', nextTrack);
-      prevBtn.addEventListener('click', prevTrack);
+      nextBtn.addEventListener('click', function(e) { e.stopPropagation(); nextTrack(); });
+      prevBtn.addEventListener('click', function(e) { e.stopPropagation(); prevTrack(); });
       volumeEl.addEventListener('input', function() {
-        audio.volume = this.value / 100;
+        targetVolume = this.value / 100;
+        audio.volume = targetVolume;
       });
 
-      // === MOBILE AUTOPLAY BYPASS ===
-      // Strategy: Capture ANY user interaction (touch, click, scroll, keydown)
-      // to unlock AudioContext and start playback.
-      // The invisible overlay captures the very first tap on mobile.
+      // === AUTOPLAY STRATEGY ===
+      // Step 1: Try normal autoplay (works on some desktops)
+      // Step 2: If blocked, play MUTED (muted autoplay is allowed everywhere)
+      // Step 3: On first user interaction, unmute audio
+      // Result: Music visually plays immediately on ALL devices
 
-      function unlockAndPlay() {
-        if (userInteracted) return;
-        userInteracted = true;
-
-        // Remove the overlay
+      function removeOverlay() {
         if (overlay && overlay.parentNode) {
           overlay.parentNode.removeChild(overlay);
+          overlay = null;
         }
+      }
 
-        // Resume AudioContext if suspended (Chrome mobile requirement)
-        if (window.AudioContext || window.webkitAudioContext) {
-          var ctx = new (window.AudioContext || window.webkitAudioContext)();
-          if (ctx.state === 'suspended') {
-            ctx.resume();
-          }
-        }
+      function unlockAudio() {
+        if (audioUnlocked) return;
+        audioUnlocked = true;
 
-        // Start playback
-        if (!isPlaying) {
+        // Unmute and restore volume
+        audio.muted = false;
+        audio.volume = targetVolume;
+
+        // Update title back to track name
+        titleEl.textContent = '♪ ' + playlist[currentTrack].name;
+
+        // If not playing yet (edge case), start now
+        if (audio.paused) {
           playAudio();
         }
 
-        // Remove all unlock listeners
-        document.removeEventListener('click', unlockAndPlay, true);
-        document.removeEventListener('touchstart', unlockAndPlay, true);
-        document.removeEventListener('touchend', unlockAndPlay, true);
-        document.removeEventListener('keydown', unlockAndPlay, true);
-        document.removeEventListener('scroll', unlockAndPlay, true);
+        removeOverlay();
+
+        // Cleanup listeners
+        var events = ['click', 'touchstart', 'touchend', 'keydown', 'pointerdown'];
+        events.forEach(function(evt) {
+          document.removeEventListener(evt, unlockAudio, true);
+        });
       }
 
-      // Listen on multiple events to catch the FIRST user interaction
-      document.addEventListener('click', unlockAndPlay, true);
-      document.addEventListener('touchstart', unlockAndPlay, true);
-      document.addEventListener('touchend', unlockAndPlay, true);
-      document.addEventListener('keydown', unlockAndPlay, true);
-      document.addEventListener('scroll', unlockAndPlay, true);
+      // Listen for first real user interaction to unmute
+      var events = ['click', 'touchstart', 'touchend', 'keydown', 'pointerdown'];
+      events.forEach(function(evt) {
+        document.addEventListener(evt, unlockAudio, true);
+      });
 
-      // Also try the overlay click
       if (overlay) {
-        overlay.addEventListener('click', unlockAndPlay);
-        overlay.addEventListener('touchstart', unlockAndPlay);
+        overlay.addEventListener('click', unlockAudio);
+        overlay.addEventListener('touchstart', unlockAudio);
       }
 
-      // Load first track
+      // Load and attempt autoplay
       loadTrack(0);
 
-      // Try autoplay immediately (works on desktop)
-      playAudio();
+      // Try 1: Normal autoplay with sound
+      var p = audio.play();
+      if (p && typeof p.then === 'function') {
+        p.then(function() {
+          // Autoplay worked with sound!
+          audioUnlocked = true;
+          setPlayingUI();
+          removeOverlay();
+        }).catch(function() {
+          // Autoplay blocked — Try 2: Play MUTED (always allowed)
+          audio.muted = true;
+          audio.volume = 0;
+          var p2 = audio.play();
+          if (p2 && typeof p2.then === 'function') {
+            p2.then(function() {
+              // Playing muted — will unmute on first interaction
+              setPlayingUI();
+              titleEl.textContent = '🔇 Tap to unmute';
+            }).catch(function() {
+              // Even muted play failed — wait for interaction
+              setPausedUI();
+            });
+          }
+        });
+      }
     })();
   </script>
 </body>
